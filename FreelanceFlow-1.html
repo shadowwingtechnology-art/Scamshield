@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreelanceFlow — Project Dashboard</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f6fb;color:#252640;font:15px Arial,sans-serif}
+header{background:#24233d;color:white;padding:24px 6%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1,h2,h3,p{margin-top:0}header h1{margin:0;font-size:24px}button{border:0;border-radius:8px;padding:12px 16px;background:#7658e8;color:white;font-weight:bold;cursor:pointer}
+main{max-width:1100px;margin:28px auto;padding:0 18px}.hero{background:linear-gradient(120deg,#282641,#5544a5);color:white;border-radius:16px;padding:30px;margin-bottom:20px}.hero p{color:#ddd9ff;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:white;padding:20px;border-radius:13px;box-shadow:0 5px 20px #2221;margin-bottom:16px}.metric{font-size:30px;font-weight:bold;margin:12px 0;color:#7658e8}
+.layout{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-top:16px}.project{padding:13px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:12px}.project small{display:block;color:#85869b;margin-top:5px}.tag{font-size:12px;background:#f0edff;color:#7052df;padding:6px 8px;border-radius:6px;white-space:nowrap}
+form{display:grid;gap:10px}input{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font:inherit}.muted{color:#8c8da0;font-size:13px}footer{text-align:center;padding:24px;color:#85869b;font-size:12px}
+@media(max-width:700px){.stats,.layout{grid-template-columns:1fr}header h1{font-size:20px}}
+</style></head>
+<body>
+<header><h1>✦ FreelanceFlow</h1><button onclick="document.getElementById('projectName').focus()">＋ New project</button></header>
+<main>
+<section class="hero"><h2>Make room for your best work.</h2><p>Manage your freelance projects, budgets, and clients in one simple dashboard. This demo uses sample data in your browser.</p></section>
+<section class="stats">
+<div class="card"><span class="muted">Revenue this month</span><div class="metric">$4,850</div><span>↑ 18% compared with last month</span></div>
+<div class="card"><span class="muted">Active projects</span><div class="metric" id="count">3</div><span>Keep your next milestone moving</span></div>
+<div class="card"><span class="muted">Outstanding invoices</span><div class="metric">$1,240</div><span>2 invoices awaiting payment</span></div>
+</section>
+<section class="layout">
+<div class="card"><h3>Project pipeline</h3><p class="muted">Add a project using the form.</p><div id="projects">
+<div class="project"><div><b>Nova Studio website</b><small>Nova Studio · Due Oct 31</small></div><span class="tag">In progress</span></div>
+<div class="project"><div><b>Mobile app UI kit</b><small>Mint Labs · Due Nov 02</small></div><span class="tag">Review</span></div>
+<div class="project"><div><b>Brand identity refresh</b><small>Bloom Co. · Due Nov 08</small></div><span class="tag">Planning</span></div>
+</div></div>
+<div class="card"><h3>Create a project</h3><form id="projectForm"><label>Project name<input id="projectName" required maxlength="80" placeholder="Website redesign"></label><label>Client name<input id="clientName" required maxlength="60" placeholder="Acme Studio"></label><label>Budget (USD)<input id="budget" type="number" min="1" max="1000000" required placeholder="1200"></label><button type="submit">Add project</button></form><p id="message" class="muted" aria-live="polite" style="margin-top:12px"></p></div>
+</section>
+</main><footer>FreelanceFlow · Portfolio demo · Sample figures only</footer>
+<script>
+const form=document.getElementById('projectForm');
+form.addEventListener('submit',function(event){
+ event.preventDefault();
+ const name=document.getElementById('projectName').value.trim();
+ const client=document.getElementById('clientName').value.trim();
+ const budget=Number(document.getElementById('budget').value);
+ if(!name||!client||!Number.isFinite(budget)||budget<1){document.getElementById('message').textContent='Please enter valid project details.';return;}
+ const row=document.createElement('div');row.className='project';
+ const left=document.createElement('div');const title=document.createElement('b');title.textContent=name;
+ const small=document.createElement('small');small.textContent=client+' · Budget $'+budget.toLocaleString();
+ left.append(title,small);const tag=document.createElement('span');tag.className='tag';tag.textContent='Planning';
+ row.append(left,tag);document.getElementById('projects').prepend(row);
+ document.getElementById('count').textContent=String(Number(document.getElementById('count').textContent)+1);
+ document.getElementById('message').textContent='Project added successfully to this demo.';
+ form.reset();
+});
+</script></body></html>
